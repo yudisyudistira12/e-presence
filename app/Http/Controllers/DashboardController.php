@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -11,7 +13,15 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('dashboard.dashboard');
+        $today = date("Y-m-d");
+        $thisMonth = date("m");
+        $thisYear = date("Y");
+        $nik = Auth::user()->nik;
+        $presensiToday = DB::table('presensi')->where('nik', $nik)->where('date_attendance', $today)->first();
+        $historyThisMonth = DB::table('presensi')->whereRaw('MONTH(date_attendance)="' . $thisMonth . '"')
+            ->whereRaw('YEAR(date_attendance)="' . $thisYear . '"')
+            ->get();
+        return view('dashboard.dashboard',compact('presensiToday','historyThisMonth'));
     }
 
     /**

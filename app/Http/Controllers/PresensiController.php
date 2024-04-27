@@ -42,17 +42,27 @@ class PresensiController extends Controller
         $lokasiuser = explode(",", $lokasi);
         $latitudeuser = $lokasiuser[0];
         $longitudeuser = $lokasiuser[1];
+
         $jarak = $this->distance($latitudekantor, $longitudekantor, $latitudeuser, $longitudeuser);
         $radius = round($jarak["meters"]);
+
+        $cek = DB::table('presensi')->where('date_attendance',$date_attendance)->where('nik',$nik)->count();
+
+        if($cek > 0){
+            $ket = "out";
+        }else {
+            $ket = "in";
+        }
+
         $image = $request->image;
         $folderPath = "public/uploads/presensi/";
-        $formatName = $nik . "-" . $date_attendance;
+        $formatName = $nik . "-" . $date_attendance . "-" . $ket;
         $image_parts = explode(";base64",$image);
         $image_base64 = base64_decode($image_parts[1]);
         $fileName = $formatName . ".png";
         $file = $folderPath . $fileName;
 
-        $cek = DB::table('presensi')->where('date_attendance',$date_attendance)->where('nik',$nik)->count();
+        
         if($radius > 100){
             echo "error|Maaf Anda Berada Diluar Radius. Jarak Anda " . $radius . "meter dari Kantor|";
         }else{

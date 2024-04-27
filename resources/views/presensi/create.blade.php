@@ -1,4 +1,5 @@
 @extends('layouts.presensi')
+@section('title','E - Presensi')
 @section('header')
     <div class="appHeader bg-primary text-light">
         <div class="left">
