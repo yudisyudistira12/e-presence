@@ -14,14 +14,25 @@ class DashboardController extends Controller
     public function index()
     {
         $today = date("Y-m-d");
-        $thisMonth = date("m");
+        $thisMonth = date("m") * 1;
         $thisYear = date("Y");
         $nik = Auth::user()->nik;
         $presensiToday = DB::table('presensi')->where('nik', $nik)->where('date_attendance', $today)->first();
-        $historyThisMonth = DB::table('presensi')->whereRaw('MONTH(date_attendance)="' . $thisMonth . '"')
+        $historyThisMonth = DB::table('presensi')
+            ->where('nik',$nik)
+            ->whereRaw('MONTH(date_attendance)="' . $thisMonth . '"')
             ->whereRaw('YEAR(date_attendance)="' . $thisYear . '"')
+            ->orderBy('date_attendance')
             ->get();
-        return view('dashboard.dashboard',compact('presensiToday','historyThisMonth'));
+        $rekapPresensi = DB::table('presensi')
+            ->selectRaw('COUNT(nik) as jmlhadir, SUM(IF(in_hour > "07:00",1,0)) as jmlterlambat')
+            ->where('nik',$nik)
+            ->whereRaw('MONTH(date_attendance)="' . $thisMonth . '"')
+            ->whereRaw('YEAR(date_attendance)="' . $thisYear . '"')
+            ->first();
+        
+        $nameMonth = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        return view('dashboard.dashboard',compact('presensiToday','historyThisMonth','nameMonth','thisMonth','thisYear','rekapPresensi'));
     }
 
     /**

@@ -7,9 +7,10 @@
             <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
         </div>
         <div id="user-info">
-            <h2 id="user-name">Adam Abdi Al A'la</h2>
-            <span id="user-role">Head of IT</span>
-            <a href="{{ route('logout') }}">Logout</a>
+            <h2 id="user-name">{{ Auth::user()->name }}</h2>
+            <span id="user-role">{{ Auth::user()->role }}</span> 
+            <span class="text-white">|</span>
+            <a class="text-warning" href="{{ route('logout') }}"><ion-icon style="font-size:1rem;" name="log-in-outline"></ion-icon>Logout</a>
         </div>
     </div>
 </div>
@@ -74,7 +75,7 @@
                                     @php
                                         $path = Storage::url('uploads/presensi/'.$presensiToday->foto_in);
                                     @endphp
-                                    <img class="imaged w64" src="{{ url($path) }}" alt="">
+                                    <img class="imaged w48" src="{{ url($path) }}" alt="">
                                     @else
                                     <ion-icon name="camera"></ion-icon>
                                 @endif
@@ -96,7 +97,7 @@
                                 @php
                                     $path = Storage::url('uploads/presensi/'.$presensiToday->foto_out);
                                 @endphp
-                                    <img class="imaged w64" src="{{ url($path) }}" alt="">
+                                    <img class="imaged w48" src="{{ url($path) }}" alt="">
                                 @else
                                     <ion-icon name="camera"></ion-icon>
                                 @endif
@@ -112,7 +113,57 @@
         </div>
     </div>
 
+    <div id="rekappresensi">
+        <h1>Rekap Presensi Bulan {{ $nameMonth[$thisMonth] }} Tahun {{ $thisYear }}</h1>
+        <div class="row">
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-body text-center" style="padding:16px 12px !important; line-height:0.8rem;">
+                        <span class="badge bg-danger" style="position:absolute; top:3px; right:10px; font-size:0.6rem; z-index:999">{{ $rekapPresensi->jmlhadir }}</span>
+                        <ion-icon name="accessibility-outline" style="font-size:1.6rem;" class="text-primary mb-1"></ion-icon>
+                        <br>
+                        <span style="font-size: 0.8rem; font-weight:500">Hadir</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-body text-center" style="padding:16px 12px !important; line-height:0.8rem;">
+                        <span class="badge bg-danger" style="position:absolute; top:3px; right:10px; font-size:0.6rem; z-index:999">0</span>
+                        <ion-icon name="newspaper-outline" style="font-size:1.6rem;" class="text-success mb-1"></ion-icon>
+                        <br>
+                        <span style="font-size: 0.8rem; font-weight:500">Izin</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-body text-center" style="padding:16px 12px !important; line-height:0.8rem;">
+                        <span class="badge bg-danger" style="position:absolute; top:3px; right:10px; font-size:0.6rem; z-index:999">0</span>
+                        <ion-icon name="medkit-outline" style="font-size:1.6rem;" class="text-warning mb-1"></ion-icon>
+                        <br>
+                        <span style="font-size: 0.8rem; font-weight:500">Sakit</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-body text-center" style="padding:16px 12px !important; line-height:0.8rem;">
+                        <span class="badge bg-danger" style="position:absolute; top:3px; right:10px; font-size:0.6rem; z-index:999">{{ $rekapPresensi->jmlhadir }}</span>
+                        <ion-icon name="alarm-outline" style="font-size:1.6rem;" class="text-danger mb-1"></ion-icon>
+                        <br>
+                        <span style="font-size: 0.8rem; font-weight:500">Telat</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="presencetab mt-2">
+        <h1>History Presensi</h1>
         <div class="tab-pane fade show active" id="pilled" role="tabpanel">
             <ul class="nav nav-tabs style1" role="tablist">
                 <li class="nav-item">
@@ -120,11 +171,11 @@
                         Bulan Ini
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#profile" role="tab">
                         Leaderboard
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </div>
         <div class="tab-content mt-2" style="margin-bottom:100px;">
@@ -149,7 +200,7 @@
                     @endforeach
                 </ul>
             </div>
-            <div class="tab-pane fade" id="profile" role="tabpanel">
+            {{-- <div class="tab-pane fade" id="profile" role="tabpanel">
                 <ul class="listview image-listview">
                     <li>
                         <div class="item">
@@ -194,7 +245,7 @@
                         </div>
                     </li>
                 </ul>
-            </div>
+            </div> --}}
 
         </div>
     </div>
