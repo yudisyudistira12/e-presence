@@ -22,12 +22,15 @@ Route::middleware(['guest'])->group(function(){
 });
 
 Route::middleware(['auth'])->group(function(){
-    Route::get('/admin',[AuthController::class, 'admin'])->middleware('userAccess:kepala toko');
-    Route::get('/dashboard',[DashboardController::class, 'index'])->name('dashboard')->middleware('userAccess:crew');
+    Route::get('/admin',[AuthController::class, 'admin'])->middleware('userAccess:Admin');
+    Route::get('/dashboard',[DashboardController::class, 'index'])->name('dashboard')->middleware('userAccess:Karyawan');
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
     Route::get('/presensi/create',[PresensiController::class, 'index']);
     Route::post('/presensi/store',[PresensiController::class, 'store']);
+
+    Route::get('/editprofile',[PresensiController::class, 'edit'])->name('profile');
+    Route::post('/presensi/{nik}/updateprofile',[PresensiController::class, 'update']);
 });
 
 

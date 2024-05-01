@@ -4,7 +4,14 @@
 <div class="section" id="user-section">
     <div id="user-detail">
         <div class="avatar">
-            <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
+            @if (!empty(Auth::user()->foto))
+                @php
+                    $path = Storage::url('uploads/karyawan/'.Auth::user()->foto);
+                @endphp
+                <img src="{{ url($path) }}" alt="avatar" class="imaged w64" style="height: 60px">
+                @else
+                <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
+            @endif
         </div>
         <div id="user-info">
             <h2 id="user-name">{{ Auth::user()->name }}</h2>

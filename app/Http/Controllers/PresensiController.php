@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 
 class PresensiController extends Controller
@@ -125,17 +127,57 @@ class PresensiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit()
     {
-        //
+        $nik = Auth::user()->nik;
+        $karyawan = DB::table('users')->where('nik',$nik)->first();
+        return view('presensi.editprofile',compact('karyawan'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $nik = Auth::user()->nik;
+        $name = $request->name;
+        $email = $request->email;
+        $no_hp = $request->no_hp;
+        $password = Hash::make($request->password);
+        $karyawan = DB::table('users')->where('nik', $nik)->first();
+        if($request->hasFile('foto')){
+            $foto = $nik . "." . $request->file('foto')->getClientOriginalExtension();
+        }else{
+            $foto = $karyawan->foto;
+        }
+
+        if(empty($request->password)){
+            $data = [
+                'name' => $name,
+                'email' => $email,
+                'no_hp' => $no_hp,
+                'foto' => $foto
+            ];
+        }else {
+            $data = [
+                'name' => $name,
+                'email' => $email,
+                'no_hp' => $no_hp,
+                'password' => $password,
+                'foto' => $foto
+            ];
+        }
+
+        $update = DB::table('users')->where('nik',$nik)->update($data);
+        if($update){
+            if($request->hasFile('foto')) {
+                $folderPath = "public/uploads/karyawan/";
+                $request->file('foto')->storeAs($folderPath, $foto);
+            }
+            return Redirect::back()->with(['success' => 'Data Berhasil Di Update' ]);
+        }else {
+            return Redirect::back()->with(['error' => 'Data Gagal Di Update']);
+        }
     }
 
     /**

@@ -19,25 +19,17 @@ class DummyUsers extends Seeder
                 'name' => 'Jono',
                 'email' => 'jono@gmail.com',
                 'no_hp' => '08123456789',
-                'password' => bcrypt('crew123'),
-                'role' => 'crew',
+                'password' => bcrypt('karyawan123'),
+                'role' => 'Karyawan',
             ],
             [
                 'nik' => '012345678',
-                'name' => 'Dadang',
-                'email' => 'dadang@gmail.com',
+                'name' => 'Admin',
+                'email' => 'admin@gmail.com',
                 'no_hp' => '08098765432',
-                'password' => bcrypt('kepala123'),
-                'role' => 'kepala toko',
-            ],
-            [
-                'nik' => '987654321',
-                'name' => 'Ahmad',
-                'email' => 'ahmad@gmail.com',
-                'no_hp' => '08987654321',
-                'password' => bcrypt('asisten123'),
-                'role' => 'asisten kepala toko',
-            ],
+                'password' => bcrypt('admin123'),
+                'role' => 'Admin',
+            ]
         ];
         
         foreach($userData as $key => $val){

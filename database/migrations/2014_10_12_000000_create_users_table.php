@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('no_hp');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['crew','kepala toko','asisten kepala toko'])->default('crew');
+            $table->enum('role', ['Karyawan','Admin'])->default('Karyawan');
+            $table->string('foto')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
