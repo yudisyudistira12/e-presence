@@ -38,8 +38,8 @@ class PresensiController extends Controller
         $nik = Auth::user()->nik;
         $date_attendance = date("Y-m-d");
         $hour = date("H:i:s");
-        $latitudekantor = -6.916623360034294;
-        $longitudekantor = 107.61218364076126;
+        $latitudekantor = -6.900171672847162;
+        $longitudekantor = 107.60857690028557;
         $lokasi = $request->lokasi;
         $lokasiuser = explode(",", $lokasi);
         $latitudeuser = $lokasiuser[0];
@@ -65,7 +65,7 @@ class PresensiController extends Controller
         $file = $folderPath . $fileName;
 
         
-        if($radius > 100){
+        if($radius > 150){
             echo "error|Maaf Anda Berada Diluar Radius. Jarak Anda " . $radius . "meter dari Kantor|";
         }else{
 
@@ -186,5 +186,26 @@ class PresensiController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function history()
+    {
+        $namaBulan = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        return view('presensi.history',compact('namaBulan'));
+    }
+
+    public function gethistory(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $nik = Auth::user()->nik;
+
+        $history = DB::table('presensi')
+            ->whereRaw('MONTH(date_attendance)="'. $bulan .'"')
+            ->whereRaw('YEAR(date_attendance)="'. $tahun .'"')
+            ->where('nik', $nik)
+            ->orderBy('date_attendance')
+            ->get();
+        return view('presensi.gethistory',compact('history'));
     }
 }

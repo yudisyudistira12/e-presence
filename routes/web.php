@@ -31,6 +31,8 @@ Route::middleware(['auth'])->group(function(){
 
     Route::get('/editprofile',[PresensiController::class, 'edit'])->name('profile');
     Route::post('/presensi/{nik}/updateprofile',[PresensiController::class, 'update']);
+    Route::get('/presensi/history',[PresensiController::class,'history']);
+    Route::post('/gethistory',[PresensiController::class, 'gethistory']);
 });
 
 

@@ -5,7 +5,7 @@
             <strong>Home</strong>
         </div>
     </a>
-    <a href="#" class="item {{ request()->is('') ? 'active' : '' }}">
+    <a href="/presensi/history" class="item {{ request()->is('history') ? 'active' : '' }}">
         <div class="col">
             <ion-icon name="document-text-outline" role="img" class="md hydrated"
                 aria-label="document text outline"></ion-icon>

@@ -31,7 +31,7 @@
         @endif
     </div>
 </div>
-<form action="/presensi/{{ $karyawan->nik }}/updateprofile" method="POST" enctype="multipart/form-data" style="margin-top:6rem">
+<form action="/presensi/{{ $karyawan->nik }}/updateprofile" method="POST" enctype="multipart/form-data" style="margin-top:4rem">
     @csrf
     <div class="col">
         <div class="form-group boxed">
@@ -54,7 +54,7 @@
                 <input type="password" class="form-control" name="password" id="" placeholder="Password" autocomplete="off">
             </div>
         </div>
-        <div class="custom-file-upload" id="fileUpload1">
+        <div class="custom-file-upload" id="fileUpload1" style="height:100px">
             <input type="file" name="foto" id="fileuploadInput" accept=".png, .jpg, .jpeg">
             <label for="fileuploadInput">
                 <span>
@@ -67,7 +67,7 @@
         </div>
         <div class="form-group boxed">
             <div class="input-wrapper">
-                <button type="submit" class="btn btn-primary btn-block">
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1rem">
                     <ion-icon name="refresh-outline"></ion-icon>
                     Update
                 </button>
