@@ -32,7 +32,15 @@ class DashboardController extends Controller
             ->first();
         
         $nameMonth = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-        return view('dashboard.dashboard',compact('presensiToday','historyThisMonth','nameMonth','thisMonth','thisYear','rekapPresensi'));
+
+        $rekapizin = DB::table('pengajuan_izin')
+            ->selectRaw('SUM(IF(status="i",1,0)) as jmlizin,SUM(IF(status="s",1,0)) as jmlsakit')
+            ->whereRaw('MONTH(date_izin)="' . $thisMonth . '"')
+            ->whereRaw('YEAR(date_izin)="' . $thisYear . '"')
+            ->first();
+
+        // dd($rekapizin);
+        return view('dashboard.dashboard',compact('presensiToday','historyThisMonth','nameMonth','thisMonth','thisYear','rekapPresensi','rekapizin'));
     }
 
     /**

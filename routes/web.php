@@ -33,6 +33,11 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/presensi/{nik}/updateprofile',[PresensiController::class, 'update']);
     Route::get('/presensi/history',[PresensiController::class,'history']);
     Route::post('/gethistory',[PresensiController::class, 'gethistory']);
+
+    Route::get('/presensi/izin',[PresensiController::class, 'izin']);
+    Route::get('/presensi/buatizin',[PresensiController::class, 'buatizin']);
+    Route::post('/presensi/storeizin',[PresensiController::class, 'storeizin']);
+
 });
 
 

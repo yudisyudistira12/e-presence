@@ -22,17 +22,6 @@ class PresensiController extends Controller
         return view('presensi.create',compact('cek'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $nik = Auth::user()->nik;
@@ -116,17 +105,6 @@ class PresensiController extends Controller
         return compact('meters');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit()
     {
         $nik = Auth::user()->nik;
@@ -180,13 +158,6 @@ class PresensiController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 
     public function history()
     {
@@ -207,5 +178,41 @@ class PresensiController extends Controller
             ->orderBy('date_attendance')
             ->get();
         return view('presensi.gethistory',compact('history'));
+    }
+
+    public function izin()
+    {
+        $nik = Auth::user()->nik;
+        $dataizin = DB::table('pengajuan_izin')->where('nik',$nik)->get();
+        return view('presensi.izin',compact('dataizin'));
+    }
+
+    public function buatizin()
+    {
+
+        return view('presensi.buatizin');    
+    }
+
+    public function storeizin(Request $request)
+    {
+        $nik = Auth::user()->nik;
+        $date_izin = $request->date_izin;
+        $status = $request->status;
+        $keterangan = $request->keterangan;
+
+        $data = [
+            'nik' => $nik,
+            'date_izin' => $date_izin,
+            'status' => $status,
+            'keterangan' => $keterangan,
+        ];
+
+        $save = DB::table('pengajuan_izin')->insert($data);
+
+        if($save){
+            return redirect('/presensi/izin')->with(['success' => 'Data Berhasil Disimpan']);
+        }else{
+            return redirect('/presensi/izin')->with(['error' => 'Data Gagal Disimpan']);
+        }
     }
 }

@@ -5,28 +5,27 @@
             <strong>Home</strong>
         </div>
     </a>
-    <a href="/presensi/history" class="item {{ request()->is('history') ? 'active' : '' }}">
+    <a href="/presensi/history" class="item {{ request()->is('presensi/history') ? 'active' : '' }}">
         <div class="col">
             <ion-icon name="document-text-outline" role="img" class="md hydrated"
                 aria-label="document text outline"></ion-icon>
             <strong>History</strong>
         </div>
     </a>
-    <a href="/presensi/create" class="item {{ request()->is('') ? 'active' : '' }}">
+    <a href="/presensi/create" class="item">
         <div class="col">
             <div class="action-button large">
                 <ion-icon name="camera" role="img" class="md hydrated" aria-label="add outline"></ion-icon>
             </div>
         </div>
     </a>
-    <a href="#" class="item">
+    <a href="/presensi/izin" class="item {{ request()->is('presensi/izin') ? 'active' : '' }}">
         <div class="col">
-            <ion-icon name="document-text-outline" role="img" class="md hydrated"
-                aria-label="document text outline"></ion-icon>
+            <ion-icon name="calendar-outline"></ion-icon>
             <strong>izin</strong>
         </div>
     </a>
-    <a href="/editprofile" class="item {{ request()->is('profile') ? 'active' : '' }}">
+    <a href="/editprofile" class="item {{ request()->is('editprofile') ? 'active' : '' }}">
         <div class="col">
             <ion-icon name="people-outline" role="img" class="md hydrated" aria-label="people outline"></ion-icon>
             <strong>Profile</strong>

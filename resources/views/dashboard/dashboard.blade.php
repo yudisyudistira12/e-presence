@@ -28,7 +28,7 @@
             <div class="list-menu">
                 <div class="item-menu text-center">
                     <div class="menu-icon">
-                        <a href="" class="green" style="font-size: 40px;">
+                        <a href="/editprofile" class="green" style="font-size: 40px;">
                             <ion-icon name="person-sharp"></ion-icon>
                         </a>
                     </div>
@@ -38,7 +38,7 @@
                 </div>
                 <div class="item-menu text-center">
                     <div class="menu-icon">
-                        <a href="" class="danger" style="font-size: 40px;">
+                        <a href="/presensi/izin" class="danger" style="font-size: 40px;">
                             <ion-icon name="calendar-number"></ion-icon>
                         </a>
                     </div>
@@ -48,7 +48,7 @@
                 </div>
                 <div class="item-menu text-center">
                     <div class="menu-icon">
-                        <a href="" class="warning" style="font-size: 40px;">
+                        <a href="/presensi/history" class="warning" style="font-size: 40px;">
                             <ion-icon name="document-text"></ion-icon>
                         </a>
                     </div>
@@ -137,7 +137,7 @@
             <div class="col-3">
                 <div class="card">
                     <div class="card-body text-center" style="padding:16px 12px !important; line-height:0.8rem;">
-                        <span class="badge bg-danger" style="position:absolute; top:3px; right:10px; font-size:0.6rem; z-index:999">0</span>
+                        <span class="badge bg-danger" style="position:absolute; top:3px; right:10px; font-size:0.6rem; z-index:999">{{ $rekapizin->jmlizin }}</span>
                         <ion-icon name="newspaper-outline" style="font-size:1.6rem;" class="text-success mb-1"></ion-icon>
                         <br>
                         <span style="font-size: 0.8rem; font-weight:500">Izin</span>
@@ -151,7 +151,7 @@
                         <span class="badge bg-danger" style="position:absolute; top:3px; right:10px; font-size:0.6rem; z-index:999">0</span>
                         <ion-icon name="medkit-outline" style="font-size:1.6rem;" class="text-warning mb-1"></ion-icon>
                         <br>
-                        <span style="font-size: 0.8rem; font-weight:500">Sakit</span>
+                        <span style="font-size: 0.8rem; font-weight:500">{{ $rekapizin->jmlsakit }}</span>
                     </div>
                 </div>
             </div>
