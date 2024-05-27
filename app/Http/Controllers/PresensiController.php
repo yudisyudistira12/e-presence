@@ -27,8 +27,8 @@ class PresensiController extends Controller
         $nik = Auth::user()->nik;
         $date_attendance = date("Y-m-d");
         $hour = date("H:i:s");
-        $latitudekantor = -6.900171672847162;
-        $longitudekantor = 107.60857690028557;
+        $latitudekantor = -6.858770212326696;
+        $longitudekantor = 107.63178442118637;
         $lokasi = $request->lokasi;
         $lokasiuser = explode(",", $lokasi);
         $latitudeuser = $lokasiuser[0];
@@ -215,4 +215,108 @@ class PresensiController extends Controller
             return redirect('/presensi/izin')->with(['error' => 'Data Gagal Disimpan']);
         }
     }
+
+    public function monitoring()
+    {
+        return view('presensi.monitoring');
+    }
+
+    public function getpresensi(Request $request)
+    {
+        $tanggal = $request->tanggal;
+        $presensi = DB::table('presensi')
+            ->join('users', 'presensi.nik', '=', 'users.nik')
+            ->select('presensi.*', 'users.name')
+            ->where('date_attendance', $tanggal)
+            ->get();
+        
+        return view('presensi.getpresensi',compact('presensi'));
+    }
+
+    public function showmap(Request $request)
+    {
+        $id = $request->id;
+        $presensi = DB::table('presensi')
+            ->join('users', 'presensi.nik', '=', 'users.nik')
+            ->where('presensi.id', $id)
+            ->first();
+        return view('presensi.showmap', compact('presensi'));
+    }
+
+    public function laporan()
+    {
+        $namaBulan = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        $karyawan = DB::table('users')->orderBy('name')->get();
+        return view('presensi.laporan',compact('namaBulan','karyawan'));
+    }
+
+    public function cetaklaporan(Request $request)
+    {
+        $nik = $request->nik;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $karyawan = DB::table('users')->where('nik', $nik)->first();
+        $namaBulan = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        $presensi = DB::table('presensi')
+            ->where('nik',$nik)
+            ->whereRaw('MONTH(date_attendance)="'. $bulan .'"')
+            ->whereRaw('YEAR(date_attendance)="'. $tahun .'"')
+            ->orderBy('date_attendance')
+            ->get();
+
+        return view('presensi.cetaklaporan',compact('namaBulan', 'bulan', 'tahun', 'karyawan', 'presensi'));
+    }
+
+    public function rekap()
+    {
+        $namaBulan = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        return view('presensi.rekap',compact('namaBulan'));
+    }
+
+    public function cetakrekap(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $namaBulan = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        $rekap = DB::table('presensi')
+            ->selectRaw('presensi.nik,name,
+            MAX(IF(DAY(date_attendance) = 1, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_1,
+            MAX(IF(DAY(date_attendance) = 2, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_2,
+            MAX(IF(DAY(date_attendance) = 3, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_3,
+            MAX(IF(DAY(date_attendance) = 4, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_4,
+            MAX(IF(DAY(date_attendance) = 5, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_5,
+            MAX(IF(DAY(date_attendance) = 6, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_6,
+            MAX(IF(DAY(date_attendance) = 7, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_7,
+            MAX(IF(DAY(date_attendance) = 8, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_8,
+            MAX(IF(DAY(date_attendance) = 9, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_9,
+            MAX(IF(DAY(date_attendance) = 10, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_10,
+            MAX(IF(DAY(date_attendance) = 11, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_11,
+            MAX(IF(DAY(date_attendance) = 12, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_12,
+            MAX(IF(DAY(date_attendance) = 13, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_13,
+            MAX(IF(DAY(date_attendance) = 14, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_14,
+            MAX(IF(DAY(date_attendance) = 15, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_15,
+            MAX(IF(DAY(date_attendance) = 16, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_16,
+            MAX(IF(DAY(date_attendance) = 17, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_17,
+            MAX(IF(DAY(date_attendance) = 18, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_18,
+            MAX(IF(DAY(date_attendance) = 19, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_19,
+            MAX(IF(DAY(date_attendance) = 20, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_20,
+            MAX(IF(DAY(date_attendance) = 21, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_21,
+            MAX(IF(DAY(date_attendance) = 22, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_22,
+            MAX(IF(DAY(date_attendance) = 23, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_23,
+            MAX(IF(DAY(date_attendance) = 24, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_24,
+            MAX(IF(DAY(date_attendance) = 25, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_25,
+            MAX(IF(DAY(date_attendance) = 26, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_26,
+            MAX(IF(DAY(date_attendance) = 27, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_27,
+            MAX(IF(DAY(date_attendance) = 28, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_28,
+            MAX(IF(DAY(date_attendance) = 29, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_29,
+            MAX(IF(DAY(date_attendance) = 30, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_30,
+            MAX(IF(DAY(date_attendance) = 31, CONCAT(in_hour,"_",IFNULL(out_hour,"00:00:00")),"")) as tgl_31')
+            ->join('users','presensi.nik','=','users.nik')
+            ->whereRaw('MONTH(date_attendance)="'. $bulan .'"')
+            ->whereRaw('YEAR(date_attendance)="'. $tahun .'"')
+            ->groupByRaw('presensi.nik,name')
+            ->get();
+            return view('presensi.cetakrekap',compact('bulan','tahun','namaBulan','rekap'));
+    }
+    
 }

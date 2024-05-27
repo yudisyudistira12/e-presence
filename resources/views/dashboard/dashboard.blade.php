@@ -148,10 +148,10 @@
             <div class="col-3">
                 <div class="card">
                     <div class="card-body text-center" style="padding:16px 12px !important; line-height:0.8rem;">
-                        <span class="badge bg-danger" style="position:absolute; top:3px; right:10px; font-size:0.6rem; z-index:999">0</span>
+                        <span class="badge bg-danger" style="position:absolute; top:3px; right:10px; font-size:0.6rem; z-index:999">{{ $rekapizin->jmlsakit }}</span>
                         <ion-icon name="medkit-outline" style="font-size:1.6rem;" class="text-warning mb-1"></ion-icon>
                         <br>
-                        <span style="font-size: 0.8rem; font-weight:500">{{ $rekapizin->jmlsakit }}</span>
+                        <span style="font-size: 0.8rem; font-weight:500">Sakit</span>
                     </div>
                 </div>
             </div>
