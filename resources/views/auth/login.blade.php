@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
-    <title>Login Presensi</title>
+    <title>Login Presensi Karyawan</title>
     <meta name="description" content="Login Presensi">
     <link rel="icon" type="image/png" href="assets/img/favicon.png" sizes="32x32">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icon/192x192.png">
@@ -41,7 +41,7 @@
                     @csrf
                     <div class="form-group boxed">
                         <div class="input-wrapper">
-                            <input type="text" name="nik" class="form-control" id="nik" placeholder="Email address">
+                            <input type="text" name="nik" class="form-control" id="nik" placeholder="Nik Karyawan">
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
@@ -65,15 +65,8 @@
                         <small>{{ $message }}</small>
                     @enderror
 
-                    <div class="form-links mt-2">
-                        <div>
-                            <a href="page-register.html">Register Now</a>
-                        </div>
-                        <div><a href="page-forgot-password.html" class="text-muted">Forgot Password?</a></div>
-                    </div>
-
                     <div class="form-button-group">
-                        <button type="submit" class="btn btn-primary btn-block btn-lg">Log in</button>
+                        <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-bottom: 200px">Log in</button>
                     </div>
 
                 </form>

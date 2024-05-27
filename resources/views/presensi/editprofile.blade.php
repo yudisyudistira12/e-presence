@@ -13,7 +13,7 @@
 @endsection
 
 @section('content')
-<div class="row" style="margin-top: 1rem">
+<div class="row" style="margin-top: 4rem">
     <div class="col">
         @php
             $messageSuccess = Session::get('success');
@@ -31,7 +31,7 @@
         @endif
     </div>
 </div>
-<form action="/presensi/{{ $karyawan->nik }}/updateprofile" method="POST" enctype="multipart/form-data" style="margin-top:4rem">
+<form action="/presensi/{{ $karyawan->nik }}/updateprofile" method="POST" enctype="multipart/form-data" style="margin-top:1rem">
     @csrf
     <div class="col">
         <div class="form-group boxed">

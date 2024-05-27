@@ -57,9 +57,32 @@ class AuthController extends Controller
         }
     }
 
+    public function postloginadmin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        $data = [
+            'email' => $request->email,
+            'password' => $request->password,
+        ];
+
+        if(Auth::attempt($data)){
+            if(Auth::user()->role == 'Karyawan'){
+                return redirect()->route('dashboard');
+            } elseif (Auth::user()->role == 'Admin'){
+                return redirect('/dashboard-admin');
+            }
+        }else{
+            return redirect()->route('login')->with('warning','Email atau Password salah');
+        }
+    }
+
     public function admin()
     {
-        echo "Test Admin";
+        return view('auth.loginadmin');
     }
 
     /**
