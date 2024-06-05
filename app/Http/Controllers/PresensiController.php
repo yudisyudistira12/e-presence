@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportPresensi;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use function Laravel\Prompts\table;
+use App\Exports\RekapPresensiExport;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
+
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
 
 class PresensiController extends Controller
 {
@@ -19,7 +24,8 @@ class PresensiController extends Controller
         $today = date("Y-m-d");
         $nik = Auth::user()->nik;
         $cek = DB::table('presensi')->where('date_attendance',$today)->where('nik',$nik)->count();
-        return view('presensi.create',compact('cek'));
+        $loc_office = DB::table('configuration_office')->where('id',1)->first();
+        return view('presensi.create',compact('cek','loc_office'));
     }
 
     public function store(Request $request)
@@ -27,8 +33,10 @@ class PresensiController extends Controller
         $nik = Auth::user()->nik;
         $date_attendance = date("Y-m-d");
         $hour = date("H:i:s");
-        $latitudekantor = -6.858770212326696;
-        $longitudekantor = 107.63178442118637;
+        $loc_office = DB::table('configuration_office')->where('id',1)->first();
+        $loc = explode(",", $loc_office->location_office);
+        $latitudekantor = $loc[0];
+        $longitudekantor = $loc[1];
         $lokasi = $request->lokasi;
         $lokasiuser = explode(",", $lokasi);
         $latitudeuser = $lokasiuser[0];
@@ -54,7 +62,7 @@ class PresensiController extends Controller
         $file = $folderPath . $fileName;
 
         
-        if($radius > 150){
+        if($radius > $loc_office->radius){
             echo "error|Maaf Anda Berada Diluar Radius. Jarak Anda " . $radius . "meter dari Kantor|";
         }else{
 
@@ -199,22 +207,27 @@ class PresensiController extends Controller
         $date_izin = $request->date_izin;
         $status = $request->status;
         $keterangan = $request->keterangan;
-
+    
+        // Menambahkan nilai default untuk kolom 'status_approved'
+        $status_approved = 0; // atau sesuai dengan kebutuhan Anda
+    
         $data = [
             'nik' => $nik,
             'date_izin' => $date_izin,
             'status' => $status,
             'keterangan' => $keterangan,
+            'status_approved' => $status_approved, // Menambahkan nilai untuk kolom 'status_approved'
         ];
-
+    
         $save = DB::table('pengajuan_izin')->insert($data);
-
+    
         if($save){
             return redirect('/presensi/izin')->with(['success' => 'Data Berhasil Disimpan']);
         }else{
             return redirect('/presensi/izin')->with(['error' => 'Data Gagal Disimpan']);
         }
     }
+    
 
     public function monitoring()
     {
@@ -316,7 +329,49 @@ class PresensiController extends Controller
             ->whereRaw('YEAR(date_attendance)="'. $tahun .'"')
             ->groupByRaw('presensi.nik,name')
             ->get();
+            
+            if ($request->has('exportexcel')) {
+                $filename = "Rekap_Presensi_Karyawan_$tahun-$bulan.xlsx";
+        
+                // Export data menggunakan class RekapPresensiExport
+                return Excel::download(new ExportPresensi($bulan, $tahun), $filename);
+            }
+
             return view('presensi.cetakrekap',compact('bulan','tahun','namaBulan','rekap'));
     }
+
+    public function izinsakit()
+    {
+        $izinsakit = DB::table('pengajuan_izin')
+        ->join('users','pengajuan_izin.nik', '=', 'users.nik')
+        ->orderBy('date_izin','desc')
+        ->get();
+        return view('presensi.izinsakit',compact('izinsakit'));
+    }
     
+    public function approveizinsakit(Request $request)
+    {
+        $status_approved = $request->status_approved;
+        $id_izinsakit_form = $request->id_izinsakit_form;
+        $update = DB::table('pengajuan_izin')->where('id',$id_izinsakit_form)->update([
+            'status_approved' => $status_approved
+        ]);
+        if($update){
+            return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
+        }else{
+            return Redirect::back()->with(['warning' => 'Data Gagal Diupdate']);
+        }
+    }
+
+    public function batalizinsakit($id)
+    {
+        $update = DB::table('pengajuan_izin')->where('id',$id)->update([
+            'status_approved' => 0
+        ]);
+        if($update){
+            return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
+        }else{
+            return Redirect::back()->with(['warning' => 'Data Gagal Diupdate']);
+        }
+    }
 }

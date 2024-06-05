@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pengajuan_izin', function (Blueprint $table) {
+        Schema::create('configuration_office', function (Blueprint $table) {
             $table->id();
-            $table->string('nik');
-            $table->date('date_izin');
-            $table->string('status');
-            $table->string('keterangan');
-            $table->string('status_approved');
+            $table->string('location_office');
+            $table->integer('radius');
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pengajuan_izin');
+        Schema::dropIfExists('configuration_office');
     }
 };

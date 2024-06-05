@@ -10,10 +10,15 @@
     <meta name="theme-color" content="#000000">
     <title>Login Presensi Karyawan</title>
     <meta name="description" content="Login Presensi">
-    <link rel="icon" type="image/png" href="assets/img/favicon.png" sizes="32x32">
+    <link rel="shortcut icon" href="{{ asset('assets/img/favicon.ico') }}" type="image/x-icon">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icon/192x192.png">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="manifest" href="__manifest.json">
+    <style>
+        body {
+            overflow: hidden;
+        }
+    </style>
 </head>
 
 <body class="bg-white">
@@ -29,12 +34,11 @@
     <div id="appCapsule" class="pt-0">
 
         <div class="login-form mt-1">
-            <div class="section">
-                <img src="{{ asset('assets/img/sample/photo/vector4.png') }}" alt="image" class="form-image">
+            <div class="section" style="margin-top: 5rem;">
+                <img src="{{ asset('assets/img/logo_alfamart_transparent.png') }}" alt="image" class="form-image">
             </div>
             <div class="section mt-1">
-                <h1>Get started</h1>
-                <h4>Fill the form to log in</h4>
+                <h1>Presensi Karyawan</h1>
             </div>
             <div class="section mt-1 mb-5">
                 <form action="{{ route('post-login') }}" method="POST">

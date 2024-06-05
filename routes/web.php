@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ConfigureController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\LoginController;
@@ -42,6 +43,12 @@ Route::middleware(['auth'])->group(function(){
         Route::post('/presensi/cetaklaporan',[PresensiController::class,'cetaklaporan']);
         Route::get('/presensi/rekap',[PresensiController::class,'rekap']);
         Route::post('/presensi/cetakrekap',[PresensiController::class,'cetakrekap']);
+        Route::get('/configure/officesite',[ConfigureController::class,'index']);
+        Route::post('/configure/updatelocation',[ConfigureController::class,'update']);
+        Route::get('/presensi/izinsakit',[PresensiController::class,'izinsakit']);
+        Route::post('/presensi/approveizinsakit',[PresensiController::class,'approveizinsakit']);
+        Route::get('/presensi/{id}/batalizinsakit',[PresensiController::class,'batalizinsakit']);
+        // Route::post('/configure/store',[ConfigureController::class,'store']);
     });
 
     Route::middleware('userAccess:Karyawan')->group(function(){

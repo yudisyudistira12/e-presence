@@ -24,6 +24,7 @@ class DashboardController extends Controller
             ->whereRaw('YEAR(date_attendance)="' . $thisYear . '"')
             ->orderBy('date_attendance')
             ->get();
+
         $rekapPresensi = DB::table('presensi')
             ->selectRaw('COUNT(nik) as jmlhadir, 
             SUM(IF((in_hour >= "07:01" AND in_hour <= "07:15") OR (in_hour >= "14:01" AND in_hour <= "14:15"), 1, 0)) as jmlterlambat')

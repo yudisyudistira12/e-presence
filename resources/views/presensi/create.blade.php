@@ -72,16 +72,21 @@
         function successCallback(position){
             lokasi.value = position.coords.latitude + "," + position.coords.longitude;
             var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 16);
+            var location_office = "{{ $loc_office->location_office }}";
+            var loc = location_office.split(",");
+            var lat_office = loc[0];
+            var long_office = loc[1];
+            var radius = "{{ $loc_office->radius }}";
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
             var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
-            var circle = L.circle([-6.858770212326696, 107.63178442118637], {
+            var circle = L.circle([lat_office, long_office], {
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
-                radius: 100
+                radius: radius
             }).addTo(map);
         }
 
