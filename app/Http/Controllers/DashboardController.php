@@ -25,13 +25,45 @@ class DashboardController extends Controller
             ->orderBy('date_attendance')
             ->get();
 
-        $rekapPresensi = DB::table('presensi')
-            ->selectRaw('COUNT(nik) as jmlhadir, 
-            SUM(IF((in_hour >= "07:01" AND in_hour <= "07:15") OR (in_hour >= "14:01" AND in_hour <= "14:15"), 1, 0)) as jmlterlambat')
-            ->where('nik',$nik)
-            ->whereRaw('MONTH(date_attendance)="' . $thisMonth . '"')
-            ->whereRaw('YEAR(date_attendance)="' . $thisYear . '"')
-            ->first();
+            $rekapPresensi = DB::table('presensi')
+    ->selectRaw('
+        SUM(CASE 
+            WHEN (TIME(in_hour) >= "07:01" AND TIME(in_hour) <= "07:15") THEN 1
+            ELSE 0
+        END) as jmlterlambat_shift1,
+        SUM(CASE 
+            WHEN (TIME(in_hour) > "07:15") THEN 1
+            ELSE 0
+        END) as jmltidakhadir_shift1,
+        SUM(CASE 
+            WHEN (TIME(in_hour) >= "14:01" AND TIME(in_hour) <= "14:15") THEN 1
+            ELSE 0
+        END) as jmlterlambat_shift2,
+        SUM(CASE 
+            WHEN (TIME(in_hour) > "14:15") THEN 1
+            ELSE 0
+        END) as jmltidakhadir_shift2,
+        (SUM(CASE 
+            WHEN (TIME(in_hour) >= "07:01" AND TIME(in_hour) <= "07:15") THEN 1
+            ELSE 0
+        END) + SUM(CASE 
+            WHEN (TIME(in_hour) >= "14:01" AND TIME(in_hour) <= "14:15") THEN 1
+            ELSE 0
+        END)) as jmlterlambat,
+        COUNT(*) - (SUM(CASE 
+            WHEN (TIME(in_hour) > "07:15") THEN 1
+            ELSE 0
+        END) + SUM(CASE 
+            WHEN (TIME(in_hour) > "14:15") THEN 1
+            ELSE 0
+        END)) as jmlhadir'
+    )
+    ->where('nik', $nik)
+    ->whereRaw('MONTH(date_attendance)="' . $thisMonth . '"')
+    ->whereRaw('YEAR(date_attendance)="' . $thisYear . '"')
+    ->first();
+
+        
         
         $nameMonth = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
@@ -42,7 +74,6 @@ class DashboardController extends Controller
             ->whereRaw('YEAR(date_izin)="' . $thisYear . '"')
             ->first();
 
-        // dd($rekapizin);
         return view('dashboard.dashboard',compact('presensiToday','historyThisMonth','nameMonth','thisMonth','thisYear','rekapPresensi','rekapizin'));
     }
 
@@ -53,10 +84,11 @@ class DashboardController extends Controller
     {
         $today = date("Y-m-d");
         $rekapPresensi = DB::table('presensi')
-            ->selectRaw('COUNT(nik) as jmlhadir, SUM(IF(in_hour > "07:00",1,0)) as jmlterlambat')
+            ->selectRaw('COUNT(nik) as jmlhadir, 
+            SUM(IF((in_hour >= "07:01" AND in_hour <= "07:15") OR (in_hour >= "14:01" AND in_hour <= "14:15"), 1, 0)) as jmlterlambat')
             ->where('date_attendance',$today)
             ->first();
-        $rekapizin = DB::table('pengajuan_izin')
+            $rekapizin = DB::table('pengajuan_izin')
             ->selectRaw('SUM(IF(status="i",1,0)) as jmlizin,SUM(IF(status="s",1,0)) as jmlsakit')
             ->where('date_izin',$today)
             ->where('status_approved',1)
