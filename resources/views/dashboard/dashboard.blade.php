@@ -178,11 +178,6 @@
                         Bulan Ini
                     </a>
                 </li>
-                {{-- <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#profile" role="tab">
-                        Leaderboard
-                    </a>
-                </li> --}}
             </ul>
         </div>
         <div class="tab-content mt-2" style="margin-bottom:100px;">
@@ -207,53 +202,6 @@
                     @endforeach
                 </ul>
             </div>
-            {{-- <div class="tab-pane fade" id="profile" role="tabpanel">
-                <ul class="listview image-listview">
-                    <li>
-                        <div class="item">
-                            <img src="assets/img/sample/avatar/avatar1.jpg" alt="image" class="image">
-                            <div class="in">
-                                <div>Edward Lindgren</div>
-                                <span class="text-muted">Designer</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item">
-                            <img src="assets/img/sample/avatar/avatar1.jpg" alt="image" class="image">
-                            <div class="in">
-                                <div>Emelda Scandroot</div>
-                                <span class="badge badge-primary">3</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item">
-                            <img src="assets/img/sample/avatar/avatar1.jpg" alt="image" class="image">
-                            <div class="in">
-                                <div>Henry Bove</div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item">
-                            <img src="assets/img/sample/avatar/avatar1.jpg" alt="image" class="image">
-                            <div class="in">
-                                <div>Henry Bove</div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item">
-                            <img src="assets/img/sample/avatar/avatar1.jpg" alt="image" class="image">
-                            <div class="in">
-                                <div>Henry Bove</div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div> --}}
-
         </div>
     </div>
 </div>
